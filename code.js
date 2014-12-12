@@ -1,3 +1,28 @@
+function addEditablePolygon( map )
+{
+    // Define the LatLng coordinates for the polygon.
+    var shapeCoords = [
+        new google.maps.LatLng(38.7717496, -9.2134604),
+        new google.maps.LatLng(38.7917496, -9.2134604),
+        new google.maps.LatLng(38.7817496, -9.2334604),
+        new google.maps.LatLng(38.7717496, -9.2234604),
+    ];    
+    
+    // Construct the polygon.
+    var shape = new google.maps.Polygon({
+        paths: shapeCoords,
+        strokeColor: '#888888',
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        fillColor: '#888888',
+        fillOpacity: 0.35,
+        draggable: true,
+        editable: true
+    });
+
+    shape.setMap(map);
+}
+
 function addPolygon( map )
 {
     // Define the LatLng coordinates for the polygon.
@@ -88,6 +113,7 @@ function initialize()
     addMarker( map ) ;
     addHomeButton( map, homeLocation ) ;
     addPolygon( map ) ;
+    addEditablePolygon( map ) ;
 }
 
 function loadGoogleMapsScript()
