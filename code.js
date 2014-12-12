@@ -1,3 +1,12 @@
+function addMarker( map )
+{
+    var marker = new google.maps.Marker({
+        position: {lat: 38.7517496, lng: -9.2334604},
+        map: map,
+        title: 'Aqui!'
+    });
+}
+
 function initialize()
 {
     var mapOptions = {
@@ -6,6 +15,8 @@ function initialize()
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    
+    addMarker( map )
 }
 
 function loadGoogleMapsScript()
