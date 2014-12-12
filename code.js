@@ -12,7 +12,10 @@ function initialize()
     var mapOptions = {
         center: new google.maps.LatLng(38.7717496,-9.2534604),
         zoom: 13,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        panControl: false,
+        scaleControl: true,
+        streetViewControl: false
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     
