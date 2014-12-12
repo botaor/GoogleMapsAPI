@@ -1,3 +1,27 @@
+function addPolygon( map )
+{
+    // Define the LatLng coordinates for the polygon.
+    var shapeCoords = [
+        new google.maps.LatLng(38.7717496, -9.2534604),
+        new google.maps.LatLng(38.7917496, -9.2534604),
+        new google.maps.LatLng(38.8017496, -9.2834604),
+        new google.maps.LatLng(38.7817496, -9.2734604),
+        new google.maps.LatLng(38.7717496, -9.2634604),
+    ];    
+    
+    // Construct the polygon.
+    var shape = new google.maps.Polygon({
+        paths: shapeCoords,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35
+    });
+
+    shape.setMap(map);
+}
+
 function HomeControl(controlDiv, map, loc)
 {
   // Set CSS styles for the DIV containing the control
@@ -63,6 +87,7 @@ function initialize()
     
     addMarker( map ) ;
     addHomeButton( map, homeLocation ) ;
+    addPolygon( map ) ;
 }
 
 function loadGoogleMapsScript()
