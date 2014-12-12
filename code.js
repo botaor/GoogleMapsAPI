@@ -21,6 +21,64 @@ function addEditablePolygon( map )
     });
 
     shape.setMap(map);
+    addDeleteButton(shape, 'poly_del.png');
+}
+
+function addDeleteButton(poly, imageUrl)
+{
+    var path = poly.getPath();
+    path.btnDeleteClickHandler = {};
+    path.btnDeleteImageUrl = imageUrl;
+
+    google.maps.event.addListener(poly.getPath(),'set_at',pointUpdated);
+    google.maps.event.addListener(poly.getPath(),'insert_at',pointUpdated);
+}
+
+function pointUpdated(index)
+{
+    var path = this;
+    // make sure we have at least 3 corners
+    if( path.getLength() <= 3 )
+    {
+        $('.deletePoly').height(0);
+        return false;
+    }
+
+    $('.deletePoly').height(27);
+    var btnDelete = getDeleteButton(path.btnDeleteImageUrl);
+
+    if(btnDelete.length === 0) 
+    {
+        var undoimg = $("img[src$='http://maps.gstatic.com/mapfiles/undo_poly.png']");
+
+        undoimg.parent().css('height', '21px !important');
+        undoimg.parent().parent().append('<div class="deletePoly" style="overflow-x: hidden; overflow-y: hidden; position: absolute; width: 30px; height: 27px;top:21px;"><img src="' + path.btnDeleteImageUrl + '" style="height:auto; width:auto; position: absolute; left:0;"/></div>');
+
+        // now get that button back again!
+        btnDelete = getDeleteButton(path.btnDeleteImageUrl);
+        btnDelete.hover(function() { $(this).css('left', '-30px'); return false;}, 
+            function() { $(this).css('left', '0px'); return false;});
+        btnDelete.mousedown(function() { $(this).css('left', '-60px'); return false;});
+    }
+
+    // if we've already attached a handler, remove it
+    if(path.btnDeleteClickHandler) 
+        btnDelete.unbind('click', path.btnDeleteClickHandler);
+
+    // now add a handler for removing the passed in index
+    path.btnDeleteClickHandler = function() {
+        // make sure we have at least 3 corners
+        if( path.getLength() <= 3 )
+            return false;
+        path.removeAt(index); 
+            return false;
+    };
+    btnDelete.click(path.btnDeleteClickHandler);
+}
+
+function getDeleteButton(imageUrl)
+{
+    return  $("img[src$='" + imageUrl + "']");
 }
 
 function addPolygon( map )
