@@ -146,6 +146,36 @@ function addHomeButton( map, loc )
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
 }
 
+function addMarkerTotal( map, pos, dim, tit, drag )
+{
+    var image = {
+        url: 'marquersprite.png',
+        // This marker is 20 pixels wide by 32 pixels tall.
+        size: dim.size,
+        // The origin for this image is 0,0.
+        origin: dim.origin,
+        // The anchor for this image is the base of the flagpole at 0,32.
+        anchor: dim.anchor
+    };
+    var marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title: tit,
+        icon: image,
+        draggable: drag
+    });
+}
+
+function addMarkerImage( map, imgName )
+{
+    var marker = new google.maps.Marker({
+        position: {lat: 38.7717496, lng: -9.2934604},
+        map: map,
+        title: 'My Image!',
+        icon: imgName
+    });
+}
+
 function addMarker( map )
 {
     var marker = new google.maps.Marker({
@@ -153,6 +183,33 @@ function addMarker( map )
         map: map,
         title: 'Aqui!'
     });
+}
+
+function addMarkersComplex( map )
+{
+    addMarkerImage( map, 'marquer.png' ) ;
+    
+    var dim ;
+    dim = { 
+        origin: new google.maps.Point(0,0), 
+        size: new google.maps.Size(20, 34), 
+        anchor: new google.maps.Point(10, 34)
+    };
+    addMarkerTotal( map, {lat: 38.7457496, lng: -9.2854604}, dim, 'Image 1', false ) ;
+
+    dim = { 
+        origin: new google.maps.Point(20,0), 
+        size: new google.maps.Size(30, 50), 
+        anchor: new google.maps.Point(15, 49)
+    };
+    addMarkerTotal( map, {lat: 38.7457496, lng: -9.2744604}, dim, 'Image 2', true ) ;
+
+    dim = { 
+        origin: new google.maps.Point(50,0), 
+        size: new google.maps.Size(9, 18), 
+        anchor: new google.maps.Point(4, 17)
+    };
+    addMarkerTotal( map, {lat: 38.7457496, lng: -9.2634604}, dim, 'Image 3', false ) ;
 }
 
 function initialize()
@@ -172,6 +229,7 @@ function initialize()
     addHomeButton( map, homeLocation ) ;
     addPolygon( map ) ;
     addEditablePolygon( map ) ;
+    addMarkersComplex( map ) ;
 }
 
 function loadGoogleMapsScript()
