@@ -164,6 +164,8 @@ function addMarkerTotal( map, pos, dim, tit, drag )
         icon: image,
         draggable: drag
     });
+    
+    return marker ;
 }
 
 function addMarkerImage( map, imgName )
@@ -185,31 +187,67 @@ function addMarker( map )
     });
 }
 
-function addMarkersComplex( map )
+function makeContentString( str )
+{
+    return '<div id="content">'+
+    '<div id="siteNotice">'+
+    '</div>'+
+    '<h1 id="firstHeading" class="firstHeading">The Heading</h1>'+
+    '<div id="bodyContent">'+
+    '<p><b>Notice</b>: You can write whatever you want in these notices. ' +
+    'But there should be only <u>one</u> shown at any given time. '+
+    'If you show <i>more</i>, the user will be distracted.</p>'+
+    '<p>Link: <a target="_blank" href="http://google.com">http://google.com</a></p>'+
+    '<p>Position: '+str+'</p>'+
+    '</div>'+
+    '</div>';
+}
+
+function showWindow( ev )
+{
+    this.infoWindow.content = makeContentString( ev.latLng ) ;
+    this.infoWindow.open( this.map,this );
+}
+
+function addMarkersComplex( map, infoW )
 {
     addMarkerImage( map, 'marquer.png' ) ;
     
-    var dim ;
+    var dim, mk ;
     dim = { 
         origin: new google.maps.Point(0,0), 
         size: new google.maps.Size(20, 34), 
         anchor: new google.maps.Point(10, 34)
     };
-    addMarkerTotal( map, {lat: 38.7457496, lng: -9.2854604}, dim, 'Image 1', false ) ;
+    mk = addMarkerTotal( map, {lat: 38.7457496, lng: -9.2854604}, dim, 'Image 1', false ) ;
+    mk.infoWindow = infoW ;
+    google.maps.event.addListener(mk, 'click', showWindow);    
 
     dim = { 
         origin: new google.maps.Point(20,0), 
         size: new google.maps.Size(30, 50), 
         anchor: new google.maps.Point(15, 49)
     };
-    addMarkerTotal( map, {lat: 38.7457496, lng: -9.2744604}, dim, 'Image 2', true ) ;
+    mk = addMarkerTotal( map, {lat: 38.7457496, lng: -9.2744604}, dim, 'Image 2', true ) ;
+    mk.infoWindow = infoW ;
+    google.maps.event.addListener(mk, 'click', showWindow);    
 
     dim = { 
         origin: new google.maps.Point(50,0), 
         size: new google.maps.Size(9, 18), 
         anchor: new google.maps.Point(4, 17)
     };
-    addMarkerTotal( map, {lat: 38.7457496, lng: -9.2634604}, dim, 'Image 3', false ) ;
+    mk = addMarkerTotal( map, {lat: 38.7457496, lng: -9.2634604}, dim, 'Image 3', false ) ;
+    mk.infoWindow = infoW ;
+    google.maps.event.addListener(mk, 'click', showWindow);    
+}
+
+function makeInfoWindow( map )
+{
+    return new google.maps.InfoWindow({
+        content: "later",
+        maxWidth: 200
+    });
 }
 
 function initialize()
@@ -229,7 +267,9 @@ function initialize()
     addHomeButton( map, homeLocation ) ;
     addPolygon( map ) ;
     addEditablePolygon( map ) ;
-    addMarkersComplex( map ) ;
+    
+    var infoW = makeInfoWindow( map ) ;
+    addMarkersComplex( map, infoW ) ;
 }
 
 function loadGoogleMapsScript()
