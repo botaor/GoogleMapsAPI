@@ -22,6 +22,8 @@ function addEditablePolygon( map )
 
     shape.setMap(map);
     addDeleteButton(shape, 'poly_del.png');
+    
+    return shape ;
 }
 
 function addDeleteButton(poly, imageUrl)
@@ -250,6 +252,7 @@ function makeInfoWindow( map )
     });
 }
 
+var myArea ;
 function initialize()
 {
     var homeLocation = new google.maps.LatLng(38.7717496,-9.2534604)
@@ -266,7 +269,7 @@ function initialize()
     addMarker( map ) ;
     addHomeButton( map, homeLocation ) ;
     addPolygon( map ) ;
-    addEditablePolygon( map ) ;
+    myArea = addEditablePolygon( map ) ;
     
     var infoW = makeInfoWindow( map ) ;
     addMarkersComplex( map, infoW ) ;
@@ -281,3 +284,19 @@ function loadGoogleMapsScript()
     script.src = 'http://maps.googleapis.com/maps/api/js?key=' + key + '&callback=initialize';
     document.body.appendChild(script);
 }
+
+function getVertices()
+{
+    var vertices = myArea.getPath();
+
+    // Iterate over the vertices.
+    var str = "";
+    for( var i =0; i < vertices.getLength(); ++i )
+    {
+        var xy = vertices.getAt(i);
+        str += xy.lat() + ',' + xy.lng() + '\n';
+    }    
+    
+    document.getElementById( "result" ).value = str;    
+}
+
