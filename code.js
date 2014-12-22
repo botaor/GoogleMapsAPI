@@ -253,6 +253,9 @@ function makeInfoWindow( map )
 }
 
 var myArea ;
+var myRectangle ;
+var myMarquer ;
+
 function initialize()
 {
     var homeLocation = new google.maps.LatLng(38.7717496,-9.2534604)
@@ -273,6 +276,22 @@ function initialize()
     
     var infoW = makeInfoWindow( map ) ;
     addMarkersComplex( map, infoW ) ;
+    
+    myMarquer = new google.maps.Marker({
+        position: {lat: 0.0, lng: 0.0},
+        map: null,
+        title: 'Centroid'
+    });
+    
+    myRectangle = new google.maps.Rectangle({
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        map: null,
+        bounds: null
+    });    
 }
 
 function loadGoogleMapsScript()
@@ -287,16 +306,44 @@ function loadGoogleMapsScript()
 
 function getVertices()
 {
+    myArea.setOptions({ zIndex: 10 });
+    myRectangle.setOptions({ zIndex:0 });
+
     var vertices = myArea.getPath();
 
     // Iterate over the vertices.
+    var centroid = { x: 0.0, y: 0.0 };
+    var rect = { minX: 500.0, minY: 500.0, maxX: -500.0, maxY: -500.0 };
     var str = "";
-    for( var i =0; i < vertices.getLength(); ++i )
+    var xy ;
+    var n = vertices.getLength() ;
+    for( var i = 0; i < n; ++i )
     {
-        var xy = vertices.getAt(i);
+        xy = vertices.getAt(i);
         str += xy.lat() + ',' + xy.lng() + '\n';
+
+        centroid.x += xy.lat();
+        centroid.y += xy.lng();
+        
+        if( xy.lat() < rect.minX )
+            rect.minX = xy.lat()
+        if( xy.lat() > rect.maxX )
+            rect.maxX = xy.lat()
+        if( xy.lng() < rect.minY )
+            rect.minY = xy.lng()
+        if( xy.lng() > rect.maxY )
+            rect.maxY = xy.lng()
     }    
-    
+    centroid.x /= n;
+    centroid.y /= n;
+
+    myMarquer.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
+    myMarquer.setMap( myArea.getMap() ) ;
+
+    myRectangle.setBounds( new google.maps.LatLngBounds(
+      new google.maps.LatLng(rect.minX, rect.minY),
+      new google.maps.LatLng(rect.maxX, rect.maxY))) ;    
+    myRectangle.setMap( myArea.getMap() ) ;
+
     document.getElementById( "result" ).value = str;    
 }
-
