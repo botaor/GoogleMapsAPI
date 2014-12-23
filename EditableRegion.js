@@ -61,7 +61,77 @@ EditablePolygon.prototype.getPerimeter = function ()
     return google.maps.geometry.spherical.computeLength( this.area.getPath() );
 }
 
+// This function gives the best result. Gives the center of mass of the polygon
 EditablePolygon.prototype.getCentroid = function ()
+{
+    var vertices = this.area.getPath();
+
+    // Iterate over the vertices.
+    var centroid = { x: 0.0, y: 0.0 };
+    var xy, sf ;
+    var n = vertices.getLength() ;
+    var xy_old = vertices.getAt(0) ;
+    var sum = 0.0 ;
+    for( var i = 1; i <= n; ++i )
+    {
+        if( i == n )
+            xy = vertices.getAt(0);
+        else
+            xy = vertices.getAt(i);
+
+        sf = xy_old.lng() * xy.lat() - xy.lng() * xy_old.lat() ;
+        sum += sf ;
+        centroid.x += (xy_old.lat() + xy.lat()) * sf ;
+        centroid.y += (xy_old.lng() + xy.lng()) * sf ;
+        
+        xy_old = xy ;
+    }    
+    var a = 0.5 * sum ;
+    centroid.x /= 6.0*a;
+    centroid.y /= 6.0*a;
+
+    this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
+    this.center.setMap( this.area.getMap() ) ;
+
+    return this.center;    
+}
+
+// Fancy math, but still very close to the average of the coordinates.
+// Still has problems if there are many points close together
+EditablePolygon.prototype.getCentroidFancy = function ()
+{
+    var vertices = this.area.getPath();
+
+    // Iterate over the vertices.
+    var x, y, z;
+    x = y = z = 0.0 ;
+    var xy, lan, lng ;
+    var n = vertices.getLength() ;
+    for( var i = 0; i < n; ++i )
+    {
+        xy = vertices.getAt(i);
+        lat = toRadians( xy.lat() ) ;
+        lng = toRadians( xy.lng() ) ;
+
+        x += Math.cos(lat) * Math.cos(lng) ;
+        y += Math.cos(lat) * Math.sin(lng) ;
+        z += Math.sin(lat) ;
+    }    
+    x /= n ;
+    y /= n ;
+    z /= n ;
+    var yy = Math.atan2( y, x ) ;
+    var xx = Math.atan2( z, Math.sqrt( x*x + y*y ) ) ;
+
+    this.center.setPosition( {lat: toDegrees(xx), lng: toDegrees(yy)} ) ;
+    this.center.setMap( this.area.getMap() ) ;
+
+    return this.center;    
+}
+
+// Just the average of the coordinates.
+// Has problems if there are many points close together
+EditablePolygon.prototype.getCentroidAverage = function ()
 {
     var vertices = this.area.getPath();
 
@@ -113,6 +183,16 @@ EditablePolygon.prototype.getBounds = function ()
     this.bounds.setMap( this.area.getMap() ) ;
 
     return this.bounds;    
+}
+
+function toRadians( deg )
+{
+    return deg * (3.14159265/180.0)
+}
+
+function toDegrees( rad )
+{
+    return rad * (180.0/3.14159265)
 }
 
 function addDeleteButton(poly, imageUrl)
