@@ -17,11 +17,11 @@ function EditablePolygon( map, coords )
         title: 'Centroid'
     });
     this.bounds = new google.maps.Rectangle({
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35,
+        strokeColor: '#FFFF00',
+        strokeOpacity: 0.50,
+        strokeWeight: 1.5,
+        fillColor: '#FFFF00',
+        fillOpacity: 0.40,
         map: null,
         bounds: null
     });    
