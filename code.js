@@ -211,4 +211,12 @@ function loadGoogleMapsScript()
 function getVertices()
 {
     document.getElementById( "result" ).value = myArea.getVertices();    
+    myArea.getCentroid();    
+    myArea.getBounds();    
+}
+
+function getInformation()
+{
+    document.getElementById( "result" ).value = "Area (m2): " + myArea.getArea() + '\n' +
+                                                "Perimeter (m): " + myArea.getPerimeter() + '\n';    
 }

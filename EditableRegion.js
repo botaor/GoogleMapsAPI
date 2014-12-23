@@ -25,9 +25,94 @@ function EditablePolygon( map, coords )
         map: null,
         bounds: null
     });    
+
+    // make sure bounds is under the actual polygon
+    this.area.setOptions({ zIndex: 10 });
+    this.bounds.setOptions({ zIndex:0 });
     
     this.area.setMap(map);
     addDeleteButton( this.area, 'poly_del.png');
+}
+
+EditablePolygon.prototype.getVertices = function ()
+{
+    var vertices = this.area.getPath();
+
+    // Iterate over the vertices.
+    var str = "";
+    var xy ;
+    var n = vertices.getLength() ;
+    for( var i = 0; i < n; ++i )
+    {
+        xy = vertices.getAt(i);
+        str += xy.lat() + ',' + xy.lng() + '\n';
+    }    
+
+    return str;    
+}
+
+EditablePolygon.prototype.getArea = function ()
+{
+    return google.maps.geometry.spherical.computeArea( this.area.getPath() );
+}
+
+EditablePolygon.prototype.getPerimeter = function ()
+{
+    return google.maps.geometry.spherical.computeLength( this.area.getPath() );
+}
+
+EditablePolygon.prototype.getCentroid = function ()
+{
+    var vertices = this.area.getPath();
+
+    // Iterate over the vertices.
+    var centroid = { x: 0.0, y: 0.0 };
+    var xy ;
+    var n = vertices.getLength() ;
+    for( var i = 0; i < n; ++i )
+    {
+        xy = vertices.getAt(i);
+
+        centroid.x += xy.lat();
+        centroid.y += xy.lng();
+    }    
+    centroid.x /= n;
+    centroid.y /= n;
+
+    this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
+    this.center.setMap( this.area.getMap() ) ;
+
+    return this.center;    
+}
+
+EditablePolygon.prototype.getBounds = function ()
+{
+    var vertices = this.area.getPath();
+
+    // Iterate over the vertices.
+    var rect = { minX: 500.0, minY: 500.0, maxX: -500.0, maxY: -500.0 };
+    var xy ;
+    var n = vertices.getLength() ;
+    for( var i = 0; i < n; ++i )
+    {
+        xy = vertices.getAt(i);
+        
+        if( xy.lat() < rect.minX )
+            rect.minX = xy.lat()
+        if( xy.lat() > rect.maxX )
+            rect.maxX = xy.lat()
+        if( xy.lng() < rect.minY )
+            rect.minY = xy.lng()
+        if( xy.lng() > rect.maxY )
+            rect.maxY = xy.lng()
+    }    
+
+    this.bounds.setBounds( new google.maps.LatLngBounds(
+      new google.maps.LatLng(rect.minX, rect.minY),
+      new google.maps.LatLng(rect.maxX, rect.maxY))) ;    
+    this.bounds.setMap( this.area.getMap() ) ;
+
+    return this.bounds;    
 }
 
 function addDeleteButton(poly, imageUrl)
@@ -85,48 +170,4 @@ function pointUpdated(index)
 function getDeleteButton(imageUrl)
 {
     return  $("img[src$='" + imageUrl + "']");
-}
-
-EditablePolygon.prototype.getVertices = function ()
-{
-    this.area.setOptions({ zIndex: 10 });
-    this.bounds.setOptions({ zIndex:0 });
-
-    var vertices = this.area.getPath();
-
-    // Iterate over the vertices.
-    var centroid = { x: 0.0, y: 0.0 };
-    var rect = { minX: 500.0, minY: 500.0, maxX: -500.0, maxY: -500.0 };
-    var str = "";
-    var xy ;
-    var n = vertices.getLength() ;
-    for( var i = 0; i < n; ++i )
-    {
-        xy = vertices.getAt(i);
-        str += xy.lat() + ',' + xy.lng() + '\n';
-
-        centroid.x += xy.lat();
-        centroid.y += xy.lng();
-        
-        if( xy.lat() < rect.minX )
-            rect.minX = xy.lat()
-        if( xy.lat() > rect.maxX )
-            rect.maxX = xy.lat()
-        if( xy.lng() < rect.minY )
-            rect.minY = xy.lng()
-        if( xy.lng() > rect.maxY )
-            rect.maxY = xy.lng()
-    }    
-    centroid.x /= n;
-    centroid.y /= n;
-
-    this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
-    this.center.setMap( this.area.getMap() ) ;
-
-    this.bounds.setBounds( new google.maps.LatLngBounds(
-      new google.maps.LatLng(rect.minX, rect.minY),
-      new google.maps.LatLng(rect.maxX, rect.maxY))) ;    
-    this.bounds.setMap( this.area.getMap() ) ;
-
-    return str;    
 }
