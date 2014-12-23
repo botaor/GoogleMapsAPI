@@ -168,6 +168,7 @@ function makeInfoWindow( map )
 }
 
 var myArea ;
+var map ;
 
 function initialize()
 {
@@ -180,7 +181,7 @@ function initialize()
         scaleControl: true,
         streetViewControl: false
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     
     addMarker( map ) ;
     addHomeButton( map, homeLocation ) ;
@@ -219,4 +220,29 @@ function getInformation()
 {
     document.getElementById( "result" ).value = "Area (m2): " + myArea.getArea() + '\n' +
                                                 "Perimeter (m): " + myArea.getPerimeter() + '\n';    
+}
+
+function MakeMap()
+{
+    myArea.hide() ;
+ 
+    var bounds = map.getBounds() ;
+    ne = bounds.getNorthEast() ;
+    var sw = bounds.getSouthWest() ;
+    
+    var x = (ne.lat() - sw.lat()) ;
+    var y = (sw.lng() - ne.lng()) ;
+    
+    var shapeCoords = [
+        new google.maps.LatLng(ne.lat() - x/2.0 + x/5.0, ne.lng() + y/2.0 - y/5.0),
+        new google.maps.LatLng(ne.lat() - x/2.0 + x/5.0, ne.lng() + y/2.0 + y/5.0),
+        new google.maps.LatLng(ne.lat() - x/2.0 - x/5.0, ne.lng() + y/2.0 + y/5.0),
+        new google.maps.LatLng(ne.lat() - x/2.0 - x/5.0, ne.lng() + y/2.0 - y/5.0),
+    ];    
+    myArea = new EditablePolygon( map, shapeCoords ) ;
+}
+
+function Test()
+{
+    myArea.show( map ) ;
 }

@@ -25,6 +25,7 @@ function EditablePolygon( map, coords )
         map: null,
         bounds: null
     });    
+    this.map = map ;
 
     // make sure bounds is under the actual polygon
     this.area.setOptions({ zIndex: 10 });
@@ -91,7 +92,7 @@ EditablePolygon.prototype.getCentroid = function ()
     centroid.y /= 6.0*a;
 
     this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
-    this.center.setMap( this.area.getMap() ) ;
+    this.center.setMap( this.map ) ;
 
     return this.center;    
 }
@@ -124,7 +125,7 @@ EditablePolygon.prototype.getCentroidFancy = function ()
     var xx = Math.atan2( z, Math.sqrt( x*x + y*y ) ) ;
 
     this.center.setPosition( {lat: toDegrees(xx), lng: toDegrees(yy)} ) ;
-    this.center.setMap( this.area.getMap() ) ;
+    this.center.setMap( this.map ) ;
 
     return this.center;    
 }
@@ -150,7 +151,7 @@ EditablePolygon.prototype.getCentroidAverage = function ()
     centroid.y /= n;
 
     this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
-    this.center.setMap( this.area.getMap() ) ;
+    this.center.setMap( this.map ) ;
 
     return this.center;    
 }
@@ -180,9 +181,24 @@ EditablePolygon.prototype.getBounds = function ()
     this.bounds.setBounds( new google.maps.LatLngBounds(
       new google.maps.LatLng(rect.minX, rect.minY),
       new google.maps.LatLng(rect.maxX, rect.maxY))) ;    
-    this.bounds.setMap( this.area.getMap() ) ;
+    this.bounds.setMap( this.map ) ;
 
     return this.bounds;    
+}
+
+EditablePolygon.prototype.hide = function ()
+{
+    this.area.setMap( null ) ;
+    this.center.setMap( null ) ;
+    this.bounds.setMap( null ) ;
+}
+
+EditablePolygon.prototype.show = function ( m )
+{
+    if( m === undefined )
+        m = this.map ;
+        
+    this.area.setMap( m ) ;
 }
 
 function toRadians( deg )
