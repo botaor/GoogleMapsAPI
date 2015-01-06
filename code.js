@@ -218,8 +218,10 @@ function getVertices()
 
 function getInformation()
 {
+    var xy = myArea.getCentroid() ;
     document.getElementById( "result" ).value = "Area (m2): " + myArea.getArea() + '\n' +
-                                                "Perimeter (m): " + myArea.getPerimeter() + '\n';    
+                                                "Perimeter (m): " + myArea.getPerimeter() + '\n' +   
+                                                "Centroid: " + xy.lat() + ',' + xy.lng() + '\n';    
 }
 
 function MakeMap()

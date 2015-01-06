@@ -94,7 +94,7 @@ EditablePolygon.prototype.getCentroid = function ()
     this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
     this.center.setMap( this.map ) ;
 
-    return this.center;    
+    return this.center.position;    
 }
 
 // Fancy math, but still very close to the average of the coordinates.
