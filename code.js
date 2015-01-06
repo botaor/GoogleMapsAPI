@@ -248,3 +248,10 @@ function Test()
 {
     myArea.show( map ) ;
 }
+
+function ManyMaps()
+{
+    var key = decodeURIComponent((new RegExp('[?|&]key=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1])||""
+
+    window.location.href = "manymaps.html?key=" + key
+}
