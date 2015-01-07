@@ -219,8 +219,8 @@ function getVertices()
 function getInformation()
 {
     var xy = myArea.getCentroid() ;
-    document.getElementById( "result" ).value = "Area (m2): " + myArea.getArea() + '\n' +
-                                                "Perimeter (m): " + myArea.getPerimeter() + '\n' +   
+    document.getElementById( "result" ).value = "Area (km2): " + (myArea.getArea() / 1000000).toFixed(2) + '\n' +
+                                                "Perimeter (km): " + (myArea.getPerimeter() / 1000).toFixed(2) + '\n' +   
                                                 "Centroid: " + xy.lat() + ',' + xy.lng() + '\n';    
 }
 
