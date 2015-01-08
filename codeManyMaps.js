@@ -34,7 +34,7 @@ function initialize()
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     
-    google.maps.event.addListener( map, 'bounds_changed', boundsChange );
+    google.maps.event.addListener( map, 'idle', boundsChange );
     
     nMaps = makeMaps() ;
     for( i = 0; i < nMaps; ++i )
