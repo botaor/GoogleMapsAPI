@@ -5,8 +5,7 @@ function sleep(delay)
 }
       
 var map = null ;
-var myMaps = [] ;
-var nMaps = 0 ;
+var myMaps = null ;
 
 function boundsChange()
 {
@@ -36,8 +35,8 @@ function initialize()
     
     google.maps.event.addListener( map, 'idle', boundsChange );
     
-    nMaps = makeMaps() ;
-    for( i = 0; i < nMaps; ++i )
+    makeMaps() ;
+    for( i = 0; i < myMaps.length; ++i )
     {
         myMaps[i].show( map ) ;
     }
@@ -56,7 +55,7 @@ function loadGoogleMapsScript()
 function makeMaps()
 {
     var coords ;
-    var n = 0 ;
+    myMaps = [] ;
     
     coords = [
         new google.maps.LatLng(38.78820335964493,-9.381004803076166),
@@ -66,7 +65,7 @@ function makeMaps()
         new google.maps.LatLng(38.78117828663811,-9.400745861425776),
         new google.maps.LatLng(38.7804422862835,-9.387184612646479),
     ];    
-    myMaps[n++] = new OriMap( "Palácio Sintra", coords ) ;
+    myMaps.push( new OriMap( "Palácio Sintra", coords ) ) ;
 
     coords = [
         new google.maps.LatLng(38.71322973485406,-9.253975384130854),
@@ -79,7 +78,7 @@ function makeMaps()
         new google.maps.LatLng(38.70907732036694,-9.244555466070551),
         new google.maps.LatLng(38.71751584561367,-9.25058507193603),
     ];    
-    myMaps[n++] = new OriMap( "Jamor", coords ) ;
+    myMaps.push( new OriMap( "Jamor", coords ) ) ;
 
     coords = [
         new google.maps.LatLng(39.07136671453458,-8.447038166418452),
@@ -93,7 +92,7 @@ function makeMaps()
         new google.maps.LatLng(39.06250361815611,-8.450728886022944),
         new google.maps.LatLng(39.06550253468199,-8.445707790747065),
     ];    
-    myMaps[n++] = new OriMap( "Lamarosa", coords ) ;
+    myMaps.push( new OriMap( "Lamarosa", coords ) ) ;
     
     coords = [
         new google.maps.LatLng(40.00851087438587,-8.888207905187983),
@@ -103,7 +102,7 @@ function makeMaps()
         new google.maps.LatLng(39.99720232916462,-8.888551227941889),
         new google.maps.LatLng(39.99864887449919,-8.885375492468256),
     ];    
-    myMaps[n++] = new OriMap( "Osso da Baleia", coords ) ;
+    myMaps.push( new OriMap( "Osso da Baleia", coords ) ) ;
     
     coords = [
         new google.maps.LatLng(40.0003583924251,-8.449784748449702),
@@ -113,7 +112,7 @@ function makeMaps()
         new google.maps.LatLng(39.980893687604805,-8.449613087072748),
         new google.maps.LatLng(39.989311537768494,-8.446866505041498),
     ];    
-    myMaps[n++] = new OriMap( "Vale Florido", coords ) ;
+    myMaps.push( new OriMap( "Vale Florido", coords ) ) ;
     
     coords = [
         new google.maps.LatLng(40.939152377977074,-7.403165333166498),
@@ -122,7 +121,7 @@ function makeMaps()
         new google.maps.LatLng(40.919309276825366,-7.424966328039545),
         new google.maps.LatLng(40.91956870224039,-7.404195301428217),
     ];    
-    myMaps[n++] = new OriMap( "Serra do Sirigo", coords ) ;
+    myMaps.push( new OriMap( "Serra do Sirigo", coords ) ) ;
     
     coords = [
         new google.maps.LatLng(40.35801173906583,-8.789502613439936),
@@ -130,7 +129,7 @@ function makeMaps()
         new google.maps.LatLng(40.34015405419317,-8.801518909826655),
         new google.maps.LatLng(40.342182087919625,-8.785811893835444),
     ];    
-    myMaps[n++] = new OriMap( "Tocha 2", coords ) ;
+    myMaps.push( new OriMap( "Tocha 2", coords ) ) ;
     
     coords = [
         new google.maps.LatLng(40.36527120398361,-8.791047565832514),
@@ -140,7 +139,5 @@ function makeMaps()
         new google.maps.LatLng(40.346499634069666,-8.806153767004389),
         new google.maps.LatLng(40.34754627030646,-8.798514835729975),
     ];    
-    myMaps[n++] = new OriMap( "Tocha 1", coords ) ;
-    
-    return n ;
+    myMaps.push( new OriMap( "Tocha 1", coords ) ) ;
 }
