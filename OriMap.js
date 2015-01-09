@@ -11,21 +11,37 @@ function OriMap( name, coords )
         fillOpacity: 0.35,
         map: null,
     });
+    
+    var marker = {
+        url: 'orimarquers.png',
+        size: new google.maps.Size(16, 16),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(8, 8)
+    };
     this.center = new google.maps.Marker({
-        position: {lat: 0.0, lng: 0.0},
+        position: this.getCentroid(),
         map: null,
-        title: name
+        title: name,
+        icon: marker,
     });
-    this.center.position = this.getCentroid() ;
-    this.size = google.maps.geometry.spherical.computeArea( this.area.getPath() );
+    this.size = google.maps.geometry.spherical.computeArea( this.area.getPath() ) / 1000000;
 
     this.bounds = this.getBounds() ;
 }
 
 
-OriMap.prototype.show = function ( map )
+OriMap.prototype.show = function ( map, minArea )
 {
-    this.area.setMap(map);
+    if( this.size > minArea )
+    {
+        this.center.setMap( null );
+        this.area.setMap( map );
+    }
+    else
+    {
+        this.center.setMap( map );
+        this.area.setMap( null );
+    }
 }
 
 OriMap.prototype.hide = function ()
@@ -66,10 +82,7 @@ OriMap.prototype.getCentroid = function ()
     centroid.x /= 6.0*a;
     centroid.y /= 6.0*a;
 
-    this.center.setPosition( {lat: centroid.x, lng: centroid.y} ) ;
-    this.center.setMap( this.map ) ;
-
-    return this.center.position;    
+    return {lat: centroid.x, lng: centroid.y};    
 }
 
 OriMap.prototype.getBounds = function ()

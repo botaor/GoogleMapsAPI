@@ -7,17 +7,45 @@ function sleep(delay)
 var map = null ;
 var myMaps = null ;
 
-function boundsChange()
+function getMinimumArea()
+{
+    var ne = map.getBounds().getNorthEast() ;
+    var sw = map.getBounds().getSouthWest() ;
+    
+    var s = sw.lat() - ne.lat() ;
+    if( s < 0 )
+        s = -s ;
+    var a = (s * 20) / $("#map_canvas").height() ;
+    var path = [
+        new google.maps.LatLng(sw.lat(),sw.lng()),
+        new google.maps.LatLng(sw.lat()+a,sw.lng()),
+        new google.maps.LatLng(sw.lat()+a,sw.lng()+a),
+        new google.maps.LatLng(sw.lat(),sw.lng()+a),
+    ];    
+    return google.maps.geometry.spherical.computeArea( path ) / 1000000 ;
+}    
+
+function showElements()
 {
     document.getElementById("zoomlevel").value = map.getZoom() ;
     
     var ne = map.getBounds().getNorthEast() ;
     var sw = map.getBounds().getSouthWest() ;
-    
-    document.getElementById( "result" ).value = "bounds: " + ne.lat() + ',' + ne.lng() + '\n' +
-                                                "        " + sw.lat() + ',' + sw.lng() + '\n';  
+
+    var minArea = getMinimumArea() ;    
+    var str = "bounds: " + ne.lat() + ',' + ne.lng() + '\n' +
+              "        " + sw.lat() + ',' + sw.lng() + '\n' +
+              "div height: " + $("#map_canvas").height() + '\n' +  
+              "area: " + minArea + '\n' ;  
+
+    document.getElementById( "result" ).value = str ;
     //simulate read from database
     //sleep( 200 ) ;
+
+    for( i = 0; i < myMaps.length; ++i )
+    {
+        myMaps[i].show( map, minArea ) ;
+    }
 }    
 
 function initialize()
@@ -33,13 +61,9 @@ function initialize()
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     
-    google.maps.event.addListener( map, 'idle', boundsChange );
+    google.maps.event.addListener( map, 'idle', showElements );
     
     makeMaps() ;
-    for( i = 0; i < myMaps.length; ++i )
-    {
-        myMaps[i].show( map ) ;
-    }
 }
 
 function loadGoogleMapsScript()
