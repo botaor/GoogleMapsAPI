@@ -49,6 +49,18 @@ OriMap.prototype.hide = function ()
     this.show( null );
 }
 
+OriMap.prototype.isVisible = function ( bounds )
+{
+    var path = this.area.getPath() ;
+    for( i = 0; i < path.length; ++i )
+    {
+        if( bounds.contains( path.getAt(i) ) )
+            return true ;
+    }
+
+    return false ;
+}
+
 OriMap.prototype.getArea = function ()
 {
     return this.size ;

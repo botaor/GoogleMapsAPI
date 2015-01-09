@@ -5,7 +5,8 @@ function sleep(delay)
 }
       
 var map = null ;
-var myMaps = null ;
+var myMaps = [] ;
+var visibleMaps = [] ;
 
 function getMinimumArea()
 {
@@ -28,9 +29,22 @@ function getMinimumArea()
 function showElements()
 {
     document.getElementById("zoomlevel").value = map.getZoom() ;
+
+    var bounds = map.getBounds() ;
+    var i ;
+    for( i = 0; i < visibleMaps.length; ++i )
+    {
+        visibleMaps[i].hide() ;
+    }
+    visibleMaps = []
+    for( i = 0; i < myMaps.length; ++i )
+    {
+        if( myMaps[i].isVisible( bounds ) )
+            visibleMaps.push( myMaps[i] ) ;
+    }
     
-    var ne = map.getBounds().getNorthEast() ;
-    var sw = map.getBounds().getSouthWest() ;
+    var ne = bounds.getNorthEast() ;
+    var sw = bounds.getSouthWest() ;
 
     var minArea = getMinimumArea() ;    
     var str = "bounds: " + ne.lat() + ',' + ne.lng() + '\n' +
@@ -42,9 +56,9 @@ function showElements()
     //simulate read from database
     //sleep( 200 ) ;
 
-    for( i = 0; i < myMaps.length; ++i )
+    for( i = 0; i < visibleMaps.length; ++i )
     {
-        myMaps[i].show( map, minArea ) ;
+        visibleMaps[i].show( map, minArea ) ;
     }
 }    
 
@@ -64,6 +78,22 @@ function initialize()
     google.maps.event.addListener( map, 'idle', showElements );
     
     makeMaps() ;
+}
+
+function showAll()
+{
+    for( i = 0; i < myMaps.length; ++i )
+    {
+        myMaps[i].show( map, 1000.0 ) ;
+    }
+}
+
+function hideAll()
+{
+    for( i = 0; i < myMaps.length; ++i )
+    {
+        myMaps[i].hide() ;
+    }
 }
 
 function loadGoogleMapsScript()
