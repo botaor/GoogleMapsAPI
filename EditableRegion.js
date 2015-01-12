@@ -211,6 +211,7 @@ function toDegrees( rad )
     return rad * (180.0/3.14159265)
 }
 
+// Add Delete Button code from Ian Grainger (http://jsbin.com/ajimur/421/edit?html,js,output)
 function addDeleteButton(poly, imageUrl)
 {
     var path = poly.getPath();
