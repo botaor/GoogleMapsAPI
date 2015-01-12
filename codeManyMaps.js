@@ -203,4 +203,27 @@ function makeMaps( infoW )
         new google.maps.LatLng(40.34754627030646,-8.798514835729975),
     ];    
     myMaps.push( new OriMap( "Tocha 1", coords, infoW ) ) ;
+
+    coords = [
+        new google.maps.LatLng(38.7985655975504,-9.388343326940912),
+        new google.maps.LatLng(38.79843181250384,-9.393321506872553),
+        new google.maps.LatLng(38.79465228121482,-9.393192760839838),
+        new google.maps.LatLng(38.795622268550765,-9.389748804464716),
+        new google.maps.LatLng(38.794986761097725,-9.385789863958735),
+        new google.maps.LatLng(38.7969601604561,-9.385811321630854),
+    ];    
+    myMaps.push( new OriMap( "Sintra centro", coords, infoW ) ) ;
+
+    coords = [
+        new google.maps.LatLng(38.7807433779431,-9.407440655126948),
+        new google.maps.LatLng(38.79542843183288,-9.43808221091308),
+        new google.maps.LatLng(38.79164874123245,-9.459454052343744),
+        new google.maps.LatLng(38.78515924747901,-9.467865459814448),
+        new google.maps.LatLng(38.77057245647408,-9.472328655615229),
+        new google.maps.LatLng(38.76294331487429,-9.453188412084955),
+        new google.maps.LatLng(38.75129726214093,-9.449154369726557),
+        new google.maps.LatLng(38.74045267603335,-9.424005978002924),
+        new google.maps.LatLng(38.74741482183931,-9.406925670996088),
+    ];    
+    myMaps.push( new OriMap( "Sintra BTT", coords, infoW ) ) ;
 }
