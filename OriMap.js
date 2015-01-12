@@ -1,6 +1,7 @@
-function OriMap( name, coords )
+function OriMap( name, coords, infoW )
 {
     this.name = name ;
+    this.infoWindow = infoW ;
     // Construct the polygon.
     this.area = new google.maps.Polygon({
         paths: coords,
@@ -11,6 +12,8 @@ function OriMap( name, coords )
         fillOpacity: 0.35,
         map: null,
     });
+    this.area.oriMap = this ;
+    google.maps.event.addListener( this.area, 'click', showWindow );
     
     var marker = {
         url: 'orimarquers.png',
@@ -18,12 +21,15 @@ function OriMap( name, coords )
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(8, 8)
     };
+
     this.center = new google.maps.Marker({
         position: this.getCentroid(),
         map: null,
         title: name,
         icon: marker,
     });
+    this.center.oriMap = this ;
+    google.maps.event.addListener( this.center, 'click', showWindow );    
     this.size = google.maps.geometry.spherical.computeArea( this.area.getPath() ) / 1000000;
 
     this.bounds = this.getBounds() ;
@@ -64,6 +70,11 @@ OriMap.prototype.isVisible = function ( bounds )
 OriMap.prototype.getArea = function ()
 {
     return this.size ;
+}
+
+OriMap.prototype.getName = function ()
+{
+    return this.name ;
 }
 
 OriMap.prototype.getCentroid = function ()
@@ -122,4 +133,27 @@ OriMap.prototype.getBounds = function ()
     return new google.maps.LatLngBounds(
       new google.maps.LatLng(rect.minX, rect.minY),
       new google.maps.LatLng(rect.maxX, rect.maxY)) ;    
+}
+
+function makeContentString( oMap )
+{
+    return '<div id="content">'+
+    '<div id="siteNotice">'+
+    '</div>'+
+    '<h1 id="firstHeading" class="firstHeading">' + oMap.getName() + '</h1>'+
+    '<div id="bodyContent">'+
+    '<p>One special map with some more text.</p>'+
+    '</div>'+
+    '</div>';
+}
+
+function showWindow( ev )
+{
+    var om = this.oriMap ;
+    
+    om.infoWindow.setContent( makeContentString( om ) ) ;
+    // Using setPosition makes it able to be used for markers and maps alike
+    om.infoWindow.setPosition( om.center.position ) ;
+
+    om.infoWindow.open( this.map );
 }
