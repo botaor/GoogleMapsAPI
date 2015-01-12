@@ -69,7 +69,7 @@ function initialize()
     var mapOptions = {
         center: homeLocation,
         zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
         panControl: false,
         scaleControl: true,
         streetViewControl: false
