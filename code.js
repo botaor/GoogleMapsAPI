@@ -66,7 +66,7 @@ function addHomeButton( map, loc )
 function addMarkerTotal( map, pos, dim, tit, drag )
 {
     var image = {
-        url: 'marquersprite.png',
+        url: 'img/marquersprite.png',
         // This marker is 20 pixels wide by 32 pixels tall.
         size: dim.size,
         // The origin for this image is 0,0.
@@ -128,7 +128,7 @@ function showWindow( ev )
 
 function addMarkersComplex( map, infoW )
 {
-    addMarkerImage( map, 'marquer.png' ) ;
+    addMarkerImage( map, 'img/marquer.png' ) ;
     
     var dim, mk ;
     dim = { 

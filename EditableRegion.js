@@ -32,7 +32,7 @@ function EditablePolygon( map, coords )
     this.bounds.setOptions({ zIndex:0 });
     
     this.area.setMap(map);
-    addDeleteButton( this.area, 'poly_del.png');
+    addDeleteButton( this.area, 'img/poly_del.png');
 }
 
 EditablePolygon.prototype.getVertices = function ()

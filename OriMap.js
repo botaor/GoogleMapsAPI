@@ -16,7 +16,7 @@ function OriMap( name, coords, infoW )
     google.maps.event.addListener( this.area, 'click', showWindow );
     
     var marker = {
-        url: 'orimarquers.png',
+        url: 'img/orimarquers.png',
         size: new google.maps.Size(16, 16),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(8, 8)
