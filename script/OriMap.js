@@ -45,8 +45,9 @@ OriMap.prototype.show = function ( map, minArea )
     }
     else
     {
-        this.center.setMap( map );
         this.area.setMap( null );
+        // We return it, so that it can be added to the marker cluster.
+        return this.center ;
     }
 }
 

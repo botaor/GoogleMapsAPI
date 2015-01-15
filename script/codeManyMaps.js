@@ -6,8 +6,31 @@ function sleep(delay)
       
 var map = null ;
 var myMaps = [] ;
-var visibleMaps = [] ;
 var infoW = null ;
+var markerClusterer = null;
+
+var myStyles = [{
+    url: 'img/m1.png',
+    height: 42,
+    width: 42
+}, {
+    url: 'img/m2.png',
+    height: 44,
+    width: 44
+}, {
+    url: 'img/m3.png',
+    height: 52,
+    width: 52
+}, {
+    url: 'img/m4.png',
+    height: 62,
+    width: 62
+}, {
+    url: 'img/m5.png',
+    height: 70,
+    width: 70
+}] ;
+    
 
 function getMinimumArea()
 {
@@ -32,17 +55,6 @@ function showElements()
     document.getElementById("zoomlevel").value = map.getZoom() ;
 
     var bounds = map.getBounds() ;
-    var i ;
-    for( i = 0; i < visibleMaps.length; ++i )
-    {
-        visibleMaps[i].hide() ;
-    }
-    visibleMaps = []
-    for( i = 0; i < myMaps.length; ++i )
-    {
-        if( myMaps[i].isVisible( bounds ) )
-            visibleMaps.push( myMaps[i] ) ;
-    }
     
     var ne = bounds.getNorthEast() ;
     var sw = bounds.getSouthWest() ;
@@ -57,10 +69,25 @@ function showElements()
     //simulate read from database
     //sleep( 200 ) ;
 
-    for( i = 0; i < visibleMaps.length; ++i )
+    if (markerClusterer)
+        markerClusterer.clearMarkers();
+    
+    var markers = [];
+    var i ;
+    var o ;
+    for( i = 0; i < myMaps.length; ++i )
     {
-        visibleMaps[i].show( map, minArea ) ;
+        o = myMaps[i].show( map, minArea ) ;
+        if( o )
+            markers.push( o ) ;
     }
+
+    markerClusterer = new MarkerClusterer(map, markers, {
+          gridSize: 40,
+          averageCenter: true,
+          imagePath: "img/m",
+          styles: myStyles
+        });
 }    
 
 function initialize()

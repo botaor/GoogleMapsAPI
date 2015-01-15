@@ -19,6 +19,8 @@ So as not to expose my Google Maps API key, you have to give your key in the URL
 ## Dependencies
 This project uses [JQuery][jquery].
 
+To show the map markers in clusters we use the library [js-marker-clusterer][cluster_lib].
+
 
 ## Authors
 Developed by [Rui Botão][rui].
@@ -46,3 +48,4 @@ Dec 2014
 [api]: https://developers.google.com/maps/documentation/javascript/tutorial  "Google Maps API"
 [mit]: http://en.wikipedia.org/wiki/MIT_License "MIT License"
 [jquery]: https://jquery.org/ "jquery"
+[cluster_lib]: https://github.com/googlemaps/js-marker-clusterer "Cluster Library"
