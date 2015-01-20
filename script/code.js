@@ -202,10 +202,15 @@ function initialize()
 function loadGoogleMapsScript()
 {
     var key = decodeURIComponent((new RegExp('[?|&]key=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1])||""
+    var keyStr ;
+    if( key != "" )
+        keyStr = 'key=' + key + '&' ;
+    else
+        keyStr = "" ;
 
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'http://maps.googleapis.com/maps/api/js?key=' + key + '&callback=initialize';
+    script.src = 'http://maps.googleapis.com/maps/api/js?' + keyStr + 'callback=initialize';
     document.body.appendChild(script);
 }
 
@@ -252,6 +257,11 @@ function Test()
 function ManyMaps()
 {
     var key = decodeURIComponent((new RegExp('[?|&]key=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1])||""
+    var keyStr ;
+    if( key != "" )
+        keyStr = '?key=' + key ;
+    else
+        keyStr = "" ;
 
-    window.location.href = "manymaps.html?key=" + key
+    window.location.href = "manymaps.html" + keyStr ;
 }

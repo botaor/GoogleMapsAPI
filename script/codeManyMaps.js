@@ -128,10 +128,15 @@ function hideAll()
 function loadGoogleMapsScript()
 {
     var key = decodeURIComponent((new RegExp('[?|&]key=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1])||""
+    var keyStr ;
+    if( key != "" )
+        keyStr = 'key=' + key + '&' ;
+    else
+        keyStr = "" ;
 
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'http://maps.googleapis.com/maps/api/js?key=' + key + '&libraries=geometry&callback=initialize';
+    script.src = 'http://maps.googleapis.com/maps/api/js?' + keyStr + 'libraries=geometry&callback=initialize';
     document.body.appendChild(script);
 }
 
