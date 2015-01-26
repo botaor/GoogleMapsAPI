@@ -15,6 +15,10 @@ So as not to expose my Google Maps API key, you have to give your key in the URL
 
 	test.html?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+If you do not have a key, or do not want to use yours, then just remove the key information from the address:
+
+	test.html
+
 
 ## Dependencies
 This project uses [JQuery][jquery].
@@ -41,7 +45,7 @@ The short version: just use it!
 
 <br><br><br>
 Written by [Rui Botão][rui].<br>
-Dec 2014
+Jan 2015
 
 
 [rui]: mailto:rui.botao@ruibotao.com "Rui"
