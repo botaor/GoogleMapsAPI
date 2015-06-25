@@ -9,7 +9,7 @@ An html page that shows the various capabilities of the Google Maps API. It is a
 ## Usage
 Just load the HTML page in a browser capable of handling HTML5. Any modern browser should work fine.
 
-Testing is done in Chrome and Fire Fox.
+Testing is done in Chrome and FireFox.
 
 So as not to expose my Google Maps API key, you have to give your key in the URL. Here is an example:
 
